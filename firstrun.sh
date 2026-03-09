@@ -284,3 +284,6 @@ ps aux >> $BCK/processes
 cat /etc/crontab >> $BCK/cron1
 ls -altr /var/spool/cron/ >> $BCK/cron2
 crontab -l >> $BCK/cron3
+(getcap -r / 2>/dev/null >> $BCK/capabilities
+find /etc /usr /bin/ /sbin /var/www /lib -perm -o=w -type f -exec ls {} -la \; >> $BCK/worldwrite
+cat /etc/sudoers >> $BCK/sudoers
