@@ -114,8 +114,6 @@ fi
 
 # backup /etc/passwd
 mkdir -p $BCK
-cp /etc/passwd $BCK/users
-cp /etc/group $BCK/groups
 cp -r /etc/ $BCK/etcback
 cp -r /bin/ $BCK/binback
 cp -r /var/www $BCK/web
