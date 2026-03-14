@@ -193,8 +193,11 @@ if [ -f "$FILE" ]; then
     if sed --version >/dev/null 2>&1; then
         SED="sed -i"
     fi
+    # Disable TCP Forwarding
     $SED 's/^AllowTcpForwarding/# AllowTcpForwarding/' "$FILE"
     echo 'AllowTcpForwarding no' >> "$FILE"
+    
+    # Disable X11 Forwarding
     $SED 's/^X11Forwarding/# X11Forwarding/' "$FILE"
     echo 'X11Forwarding no' >> "$FILE"
 
@@ -206,23 +209,9 @@ if [ -f "$FILE" ]; then
     $SED 's/^PermitEmptyPasswords/# PermitEmptyPasswords/' "$FILE"
     echo 'PermitEmptyPasswords no' >> "$FILE"
 
-    if [ ! -z "$NOPUB" ]; then
-        $SED 's/^PubkeyAuthentication/# PubkeyAuthentication/' "$FILE"
-        echo 'PubkeyAuthentication no' >> "$FILE"
-    fi
-    if [ ! -z "$AUTHKEY" ]; then
-        $SED 's/^AuthorizedKeysFile/# AuthorizedKeysFile/' "$FILE"
-        echo "AuthorizedKeysFile $AUTHKEY" >> "$FILE"
-    fi
-    if [ ! -z "$ROOTPUB" ]; then
-        $SED 's/^PubkeyAuthentication/# PubkeyAuthentication/' "$FILE"
-        echo 'PubkeyAuthentication no' >> "$FILE"
-        echo 'Match User root' >> "$FILE"
-        echo '    PubkeyAuthentication yes' >> "$FILE"
-    fi
-
+    echo "SSH Hardening applied to $FILE"
 else
-    echo "Could not find sshd config"
+    echo "Could not find sshd config at $FILE"
 fi
 
 
